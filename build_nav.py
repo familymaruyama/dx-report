@@ -77,9 +77,26 @@ def inject_nav(path, nav_html):
     path.write_text(html, encoding="utf-8")
 
 
+STUB_MARK = "<!-- DXSTUB -->"
+
+
 def write_stub(path, target, display, label):
-    """旧URL用の転送ページ。最新と同じ月の実体は固定URL側にしか置かないため。"""
+    """旧URL用の転送ページ。最新と同じ月の実体は固定URL側にしか置かないため。
+
+    既存ファイルが転送ページでない＝過去分の実体なら、上書きせず中断する
+    （翌月に過去分へ退避したあと redirect_stubs を消し忘れた場合の事故防止）。
+    """
+    if path.exists():
+        current = path.read_text(encoding="utf-8")
+        if STUB_MARK not in current:
+            raise SystemExit(
+                f"[ERROR] {path.name} は転送ページではなく実体です。上書きを中断しました。\n"
+                f"        過去分へ退避済みなら reports.json の redirect_stubs から "
+                f"{path.name} を外し、archives に移してください。"
+            )
+
     html = f"""<!DOCTYPE html>
+{STUB_MARK}
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
@@ -149,7 +166,13 @@ def main():
             inject_nav(t, build_nav(m, t.name))
             print(f"  {t.name} … 月切替バーを更新")
 
+        archive_files = {a["file"] for a in m["archives"]}
         for stub in m["redirect_stubs"]:
+            if stub in archive_files:
+                raise SystemExit(
+                    f"[ERROR] {stub} が archives と redirect_stubs の両方にあります。"
+                    "過去分の実体を残すなら redirect_stubs から外してください。"
+                )
             write_stub(BASE / stub, f"{m['key']}.html", m["display"], m["latest_label"])
             print(f"  {stub} … 転送ページを生成")
 
