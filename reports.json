@@ -1,0 +1,21 @@
+{
+  "_note": "dx-report の公開構成マニフェスト。<key>.html が固定URL（常に最新）、<key>-YYYY-MM.html が過去分アーカイブ。編集後は python3 build_nav.py を実行して各ページの月切替バーと index.html を再生成する。",
+  "members": [
+    {
+      "key": "shibata",
+      "display": "柴田",
+      "latest_label": "2026年7月〜8月10日",
+      "archives": [
+        { "file": "shibata-2026-06.html", "label": "2026年6月" }
+      ],
+      "redirect_stubs": []
+    },
+    {
+      "key": "zukeyama",
+      "display": "瑞慶山",
+      "latest_label": "2026年6月",
+      "archives": [],
+      "redirect_stubs": ["zukeyama-2026-06.html"]
+    }
+  ]
+}
