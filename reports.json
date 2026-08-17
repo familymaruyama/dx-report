@@ -13,9 +13,11 @@
     {
       "key": "zukeyama",
       "display": "瑞慶山",
-      "latest_label": "2026年6月",
-      "archives": [],
-      "redirect_stubs": ["zukeyama-2026-06.html"]
+      "latest_label": "2026年7月",
+      "archives": [
+        { "file": "zukeyama-2026-06.html", "label": "2026年6月" }
+      ],
+      "redirect_stubs": []
     }
   ]
 }
