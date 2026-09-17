@@ -4,9 +4,16 @@
     {
       "key": "shibata",
       "display": "柴田",
-      "latest_label": "2026年7月〜8月10日",
+      "latest_label": "2026年8月15日〜9月15日",
       "archives": [
-        { "file": "shibata-2026-06.html", "label": "2026年6月" }
+        {
+          "file": "shibata-2026-07.html",
+          "label": "2026年7月〜8月10日"
+        },
+        {
+          "file": "shibata-2026-06.html",
+          "label": "2026年6月"
+        }
       ],
       "redirect_stubs": []
     },
@@ -15,7 +22,10 @@
       "display": "瑞慶山",
       "latest_label": "2026年7月",
       "archives": [
-        { "file": "zukeyama-2026-06.html", "label": "2026年6月" }
+        {
+          "file": "zukeyama-2026-06.html",
+          "label": "2026年6月"
+        }
       ],
       "redirect_stubs": []
     }
