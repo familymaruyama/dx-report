@@ -20,8 +20,12 @@
     {
       "key": "zukeyama",
       "display": "瑞慶山",
-      "latest_label": "2026年7月",
+      "latest_label": "2026年8月15日〜9月15日",
       "archives": [
+        {
+          "file": "zukeyama-2026-07.html",
+          "label": "2026年7月"
+        },
         {
           "file": "zukeyama-2026-06.html",
           "label": "2026年6月"
