@@ -4,8 +4,12 @@
     {
       "key": "shibata",
       "display": "柴田",
-      "latest_label": "2026年8月15日〜9月15日",
+      "latest_label": "2026年9月16日〜10月15日",
       "archives": [
+        {
+          "file": "shibata-2026-08.html",
+          "label": "2026年8月15日〜9月15日"
+        },
         {
           "file": "shibata-2026-07.html",
           "label": "2026年7月〜8月10日"
