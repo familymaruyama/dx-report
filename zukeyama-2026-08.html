@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="robots" content="noindex, nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DX戦略課 月次進捗レポート（瑞慶山 優介）</title>
+<style>
+  :root{
+    --primary:#E57138; --primary-600:#C85A28; --primary-100:#FADCC4; --primary-050:#FBF0E6;
+    --beige:#FFF0D9; --teal:#1C8A78; --teal-050:#E7F6F1;
+    --danger:#C23E29; --danger-050:#FBEBE7;
+    --ink:#20201D; --ink-2:#544E47; --ink-3:#7C756B;
+    --paper:#FBF8F3; --card:#FFFFFF; --line:#EAE3D6;
+    --r-sm:8px; --r-md:12px; --r-lg:16px; --pill:999px;
+    --shadow:0 6px 22px rgba(70,48,26,.07);
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  html{-webkit-text-size-adjust:100%;}
+  body{font-family:"Noto Sans JP","Hiragino Kaku Gothic ProN","Yu Gothic",Meiryo,system-ui,sans-serif;
+    background:var(--paper);color:var(--ink);line-height:1.8;-webkit-font-smoothing:antialiased;
+    font-feature-settings:"palt" 1;letter-spacing:.01em;}
+  ::selection{background:var(--primary-100);color:var(--ink);}
+  .wrap{max-width:1000px;margin:0 auto;padding:0 20px 76px;}
+  .ic{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0;}
+
+  .topbar{max-width:1000px;margin:0 auto;padding:22px 20px 14px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;}
+  .topbar .brand{display:inline-flex;align-items:center;gap:7px;font-size:13px;font-weight:800;color:var(--primary-600);letter-spacing:.06em;}
+  .topbar .meta{font-size:12.5px;font-weight:600;color:var(--ink-2);}
+  .topbar .meta b{color:var(--ink);font-weight:800;}
+
+  .project{background:var(--card);border:1px solid var(--line);border-radius:var(--r-lg);
+    box-shadow:var(--shadow);overflow:hidden;margin-top:22px;}
+
+  /* ===== ① 結論バンド（オレンジ・入口） ===== */
+  .pj-lead{background:linear-gradient(135deg,#C4562A 0%,#D5622D 60%,#DD6E33 120%);color:#fff;padding:22px 26px 22px;}
+  .pj-lead .top{display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+  .pj-eyebrow{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:800;letter-spacing:.16em;
+    background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.45);border-radius:var(--pill);padding:4px 12px;}
+  .pj-title{font-size:19px;font-weight:800;line-height:1.35;letter-spacing:.01em;}
+  .pj-conclusion{display:flex;align-items:flex-start;gap:12px;margin-top:14px;
+    background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.2);border-radius:12px;padding:14px 16px;}
+  .pj-conclusion .badge{margin-top:2px;}
+  .pj-conclusion p{font-size:18px;font-weight:800;line-height:1.6;color:#fff;letter-spacing:.01em;}
+
+  /* 状態バッジ（結論バンド内は白地で映えるよう反転気味） */
+  .badge{flex-shrink:0;font-size:11px;font-weight:800;letter-spacing:.02em;padding:3px 11px;border-radius:var(--pill);white-space:nowrap;}
+  /* 状態＝意味のある系統に集約：稼働/公開=ティール、進行中=オレンジ、完了=グレー、要対応=赤 */
+  .b-live,.b-pub{background:var(--teal-050);color:var(--teal);}
+  .b-prog{background:var(--primary-050);color:var(--primary-600);}
+  .b-done{background:#ECEAE5;color:#6E675E;}
+  .b-alert{background:var(--danger-050);color:var(--danger);}
+  /* 結論バンド（オレンジ地）ではバッジを白地にして映えさせる */
+  .pj-conclusion .badge{background:#fff;}
+
+  /* ===== ② 目的（今どのへん）＋ロードマップ折りたたみ ===== */
+  .pj-about{padding:15px 24px 16px;background:#FBF6EF;border-bottom:1px solid var(--line);}
+  .about-row{display:flex;align-items:flex-start;gap:10px;font-size:13.5px;line-height:1.7;color:var(--ink-2);}
+  .about-row + .about-row{margin-top:6px;}
+  .about-tag{flex-shrink:0;margin-top:2px;font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#6E675E;
+    background:#ECEAE5;border:1px solid #E2DDD3;border-radius:var(--pill);padding:2px 10px;min-width:52px;text-align:center;}
+  .about-row b{color:var(--ink);font-weight:700;}
+  .rm-fold{margin-top:11px;}
+  .rm-fold summary{cursor:pointer;display:inline-flex;align-items:center;gap:6px;font-size:12.5px;font-weight:700;color:var(--primary-600);list-style:none;}
+  .rm-fold summary::-webkit-details-marker{display:none;}
+  .rm-fold summary .chev{transition:transform .15s;}
+  .rm-fold[open] summary .chev{transform:rotate(90deg);}
+  .rm-img{display:block;width:100%;height:auto;max-height:340px;object-fit:contain;border:1px solid var(--line);border-radius:10px;background:#fff;padding:10px;margin-top:11px;}
+  .rm-note{margin-top:2px;font-size:12.5px;color:var(--ink-3);}
+
+  /* ===== ③ 具体な報告（作業項目） ===== */
+  .pj-body{padding:18px 24px 22px;}
+  .items-head{display:flex;align-items:center;gap:8px;margin:0 0 13px;font-size:13.5px;font-weight:800;color:var(--ink);}
+  .items-head .cnt{font-size:11.5px;font-weight:700;color:var(--primary-600);background:var(--primary-050);border-radius:var(--pill);padding:2px 10px;}
+  .items{display:grid;grid-template-columns:1fr 1fr;gap:15px;}
+
+  /* 左の色ラインは撤去（状態はバッジで示す＝色の氾濫を止める）。要対応(緊急)だけ赤の細縁を残す */
+  .item{border:1px solid var(--line);border-radius:var(--r-md);padding:15px 16px 14px;background:#fff;display:flex;flex-direction:column;}
+  .item.is-alert{border-left:4px solid var(--danger);}
+  .item-head{display:flex;align-items:flex-start;gap:9px;margin-bottom:11px;}
+  .item-head h3{flex:1;font-size:16.5px;font-weight:800;line-height:1.4;letter-spacing:.01em;}
+
+  .detail-block{background:#FAF5EE;border-radius:var(--r-sm);padding:11px 13px;}
+  .detail-label{display:flex;align-items:center;gap:5px;font-size:11px;font-weight:800;letter-spacing:.05em;color:var(--primary-600);margin-bottom:5px;}
+  .detail{font-size:15px;line-height:1.8;color:var(--ink);}
+
+  .ctx{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px;}
+  .box{border-radius:var(--r-sm);padding:10px 12px;}
+  .box .k{display:flex;align-items:center;gap:5px;font-size:11px;font-weight:800;letter-spacing:.03em;margin-bottom:4px;}
+  .box p{font-size:13px;line-height:1.65;}
+  /* 背景・価値＝文脈はグレーに落として"休む所"を作る（色を主張させない） */
+  .box.bg{background:#F3F1EC;color:#57514A;} .box.bg .k{color:#6E675E;}
+  .box.val{background:#F3F1EC;color:#57514A;} .box.val .k{color:#6E675E;}
+  .fwd{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px;}
+  .fwd .box{border-radius:var(--r-sm);}
+  /* このあと＝グレー地＋オレンジの細アクセントで前向きさだけ残す */
+  .box.next{background:#F3F1EC;border-left:3px solid var(--primary);color:#57514A;} .box.next .k{color:var(--primary-600);}
+  /* 課題＝唯一の"赤"。詰まっている所を一発で分からせる */
+  .box.iss{background:var(--danger-050);border-left:3px solid var(--danger);color:#7A2E1E;} .box.iss .k{color:var(--danger);}
+  .fwd.single{grid-template-columns:1fr;}
+
+  footer{max-width:1000px;margin:38px auto 0;padding:20px;text-align:center;color:var(--ink-3);font-size:12.5px;line-height:1.9;border-top:1px solid var(--line);}
+
+  @media(max-width:820px){ .items{grid-template-columns:1fr;} }
+  @media(max-width:560px){
+    .pj-lead{padding:18px;} .pj-conclusion p{font-size:16px;}
+    .pj-about{padding:14px 16px;} .pj-body{padding:16px;}
+    .ctx,.fwd{grid-template-columns:1fr;} .detail{font-size:14.5px;}
+  }
+  @media print{ body{background:#fff;} .project{box-shadow:none;break-inside:avoid;border-color:#ddd;}
+    .pj-lead{-webkit-print-color-adjust:exact;print-color-adjust:exact;} .rm-fold>*{display:block;} }
+</style>
+</head>
+<body>
+<!-- DXNAV:START -->
+<style>
+.dxnav{max-width:1000px;margin:14px auto 0;padding:10px 20px;display:flex;align-items:center;
+  gap:8px;flex-wrap:wrap;font-family:"Noto Sans JP","Hiragino Kaku Gothic ProN","Yu Gothic",Meiryo,system-ui,sans-serif;}
+.dxnav .dxnav-lbl{font-size:11.5px;font-weight:800;letter-spacing:.06em;color:#7C756B;margin-right:2px;}
+.dxnav a{font-size:12.5px;font-weight:700;text-decoration:none;color:#544E47;background:#fff;
+  border:1px solid #EAE3D6;border-radius:999px;padding:5px 13px;transition:border-color .12s,color .12s;}
+.dxnav a:hover{border-color:#E57138;color:#C85A28;}
+.dxnav a.is-current{background:#FBF0E6;border-color:#E57138;color:#C85A28;}
+.dxnav a.dxnav-idx{border-style:dashed;color:#7C756B;}
+@media print{.dxnav{display:none;}}
+</style>
+<nav class="dxnav"><span class="dxnav-lbl">📄 瑞慶山さんのレポート</span><a href="zukeyama.html">2026年9月16日〜10月15日（最新）</a><a href="zukeyama-2026-08.html" class="is-current">2026年8月15日〜9月15日</a><a href="zukeyama-2026-07.html">2026年7月</a><a href="zukeyama-2026-06.html">2026年6月</a><a href="index.html" class="dxnav-idx">一覧 →</a></nav>
+<!-- DXNAV:END -->
+
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-flag" viewBox="0 0 24 24"><path d="M5 21V4M5 4h11l-2 3.5L16 11H5"/></symbol>
+  <symbol id="i-map" viewBox="0 0 24 24"><path d="M9 4 3 6.5v13.5l6-2.5 6 2.5 6-2.5V3l-6 2.5L9 4Z"/><path d="M9 4v13.5M15 6.5V20"/></symbol>
+  <symbol id="i-list" viewBox="0 0 24 24"><path d="M8.5 6h11M8.5 12h11M8.5 18h11M4 6h.01M4 12h.01M4 18h.01"/></symbol>
+  <symbol id="i-pulse" viewBox="0 0 24 24"><path d="M3 12h4l2.5-6 4 12 2.5-6h5"/></symbol>
+  <symbol id="i-compass" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="m15.5 8.5-2 5-5 2 2-5 5-2Z"/></symbol>
+  <symbol id="i-spark" viewBox="0 0 24 24"><path d="M12 3v4M12 17v4M4.5 8l3 1.5M16.5 14.5l3 1.5M19.5 8l-3 1.5M7.5 14.5l-3 1.5M12 9a3 3 0 1 0 0 6 3 3 0 0 0 0-6Z"/></symbol>
+  <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M4 12h15M13 6l6 6-6 6"/></symbol>
+  <symbol id="i-alert" viewBox="0 0 24 24"><path d="M12 3.5 2.5 20h19L12 3.5Z"/><path d="M12 10v4.2M12 17.3h.01"/></symbol>
+  <symbol id="i-chev" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></symbol>
+</svg>
+
+<header class="topbar">
+  <span class="brand"><svg class="ic" style="width:14px;height:14px"><use href="#i-flag"/></svg>DX戦略課 ・ 月次進捗レポート</span>
+  <span class="meta">担当：<b>瑞慶山 優介</b> ／ 2026年8月15日〜9月15日</span>
+</header>
+
+<div class="wrap">
+
+
+  <section class="project">
+    <div class="pj-lead">
+      <div class="top">
+        <span class="pj-eyebrow"><svg class="ic" style="width:12px;height:12px"><use href="#i-flag"/></svg>PROJECT</span>
+        <span class="pj-title">LTVダッシュボード</span>
+      </div>
+      <div class="pj-conclusion">
+        <span class="badge b-prog">進行中</span>
+        <p>FCS上での表示から独立画面へ方針を切り替え、UI設計とデータ準備の分担が確定。次の山は、必要データを揃えるための各部署との運用調整。</p>
+      </div>
+    </div>
+    <div class="pj-about">
+      <div class="about-row"><span class="about-tag">目的</span><p>会社の経営水準を高めるため、LTVを経営判断に使える指標として可視化する。今年はLTVを表示できる状態まで進める。</p></div>
+      <div class="about-row"><span class="about-tag">現在地</span><p><b>独立画面で表示する方針とUI設計担当が確定し、表示に必要なデータ取得・受け渡しの準備に入る段階。</b></p></div>
+      <details class="rm-fold"><summary><svg class="ic chev" style="width:13px;height:13px"><use href="#i-chev"/></svg>今年のロードマップを見る</summary><img class="rm-img" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAaQAAADmCAMAAACtdQHUAAADAFBMVEX/+vTncTggIB3r59768OYcinjIWij///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////9rTyhNAAAMw0lEQVR42u2di3qjOgyExZT3f+bdboOtkWRiSNJt6Oicb5umCcb6rYttELZIfryYVCBIEkESJIkgSQRJkCSCJBEkQZIIkiBJBOlfg/ZdjZrZL4b0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" alt="今年のロードマップ"></details>
+    </div>
+    <div class="pj-body">
+      <div class="items-head"><svg class="ic"><use href="#i-list"/></svg>開発中・作業中の項目 <span class="cnt">2件</span></div>
+      <div class="items">
+
+
+        <div class="item">
+          <div class="item-head"><h3>表示方針の変更とUI設計体制</h3><span class="badge b-prog">進行中</span></div>
+          <div class="detail-block">
+            <div class="detail-label"><svg class="ic" style="width:13px;height:13px"><use href="#i-pulse"/></svg>今月の動き</div>
+            <div class="detail">これまでFCS上で表示する方針だったLTVダッシュボードを、独立した画面で表示する方針へ変更。UI設計の担当も決まり、画面側とデータ側を分けて進める体制が固まった。</div>
+          </div>
+          <div class="ctx">
+            <div class="box bg"><span class="k"><svg class="ic"><use href="#i-compass"/></svg>背景</span><p>LTVを経営判断に使える形で可視化するため、表示方法と役割分担を整理した。</p></div>
+            <div class="box val"><span class="k"><svg class="ic"><use href="#i-spark"/></svg>価値</span><p>画面設計とデータ準備の役割が明確になり、LTV表示に向けた具体的な開発へ進める。</p></div>
+          </div>
+          <div class="fwd single">
+            <div class="box next"><span class="k"><svg class="ic"><use href="#i-arrow"/></svg>このあとの予定</span><p>UI設計と並行して、表示に必要なデータの取得方法を整理する。</p></div>
+          </div>
+        </div>
+        <div class="item">
+          <div class="item-head"><h3>表示用データの準備</h3><span class="badge b-prog">進行中</span></div>
+          <div class="detail-block">
+            <div class="detail-label"><svg class="ic" style="width:13px;height:13px"><use href="#i-pulse"/></svg>今月の動き</div>
+            <div class="detail">独立画面でのLTV表示に必要なデータを受け渡すため、CSVでのデータ出力を前提に準備を開始。必要なデータの洗い出しと取得方法を整理する段階に入った。</div>
+          </div>
+          <div class="ctx">
+            <div class="box bg"><span class="k"><svg class="ic"><use href="#i-compass"/></svg>背景</span><p>画面を作るだけではLTVを表示できず、複数部署から必要なデータを正しく集める必要がある。</p></div>
+            <div class="box val"><span class="k"><svg class="ic"><use href="#i-spark"/></svg>価値</span><p>必要なデータと取得条件を整理することで、LTVを継続的に表示できる土台を作れる。</p></div>
+          </div>
+          <div class="fwd">
+            <div class="box next"><span class="k"><svg class="ic"><use href="#i-arrow"/></svg>このあとの予定</span><p>廉人さんからのデータ取得依頼表を確認し、必要なデータ・対象部署・変更内容を整理して進め方を決める。</p></div>
+            <div class="box iss"><span class="k"><svg class="ic"><use href="#i-alert"/></svg>課題・ボトルネック</span><p>大多数の部署にデータの出力方法や入力状態の変更をお願いする必要があり、全社的な運用調整が必要になる。</p></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+  <section class="project">
+    <div class="pj-lead">
+      <div class="top">
+        <span class="pj-eyebrow"><svg class="ic" style="width:12px;height:12px"><use href="#i-flag"/></svg>PROJECT</span>
+        <span class="pj-title">家族一覧／ユーザータイプ</span>
+      </div>
+      <div class="pj-conclusion">
+        <span class="badge b-pub">公開済</span>
+        <p>各部署への勉強会と運用準備を終え、家族一覧／ユーザータイプを正式リリース。今後は実運用で出る課題を、機能・運用の両面から改善していく段階に入った。</p>
+      </div>
+    </div>
+    <div class="pj-about">
+      <div class="about-row"><span class="about-tag">目的</span><p>お客様とご家族・車の関係を整理し、FCS上のデータを正しく管理できる状態をつくる。あわせて、アプリからご家族の車の情報確認や予約ができるようにする。</p></div>
+      <div class="about-row"><span class="about-tag">現在地</span><p><b>各部署への勉強会を完了し、機能リリース済み。現在は、現場で実際に使ってもらう運用フェーズ。</b></p></div>
+      <details class="rm-fold"><summary><svg class="ic chev" style="width:13px;height:13px"><use href="#i-chev"/></svg>今年のロードマップを見る</summary><img class="rm-img" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAaQAAADmCAMAAACtdQHUAAADAFBMVEX/+vTncTggIB3r59768OYcinjIWij///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////9rTyhNAAAMw0lEQVR42u2di3qjOgyExZT3f+bdboOtkWRiSNJt6Oicb5umCcb6rYttELZIfryYVCBIEkESJIkgSQRJkCSCJBEkQZIIkiBJBOlfg/ZdjZrZL4b0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" alt="今年のロードマップ"></details>
+    </div>
+    <div class="pj-body">
+      <div class="items-head"><svg class="ic"><use href="#i-list"/></svg>開発中・作業中の項目 <span class="cnt">2件</span></div>
+      <div class="items">
+
+
+        <div class="item">
+          <div class="item-head"><h3>リリースに向けた最終確認・準備</h3><span class="badge b-done">完了</span></div>
+          <div class="detail-block">
+            <div class="detail-label"><svg class="ic" style="width:13px;height:13px"><use href="#i-pulse"/></svg>今月の動き</div>
+            <div class="detail">機能の最終確認を行い、家族一覧とユーザータイプの登録・運用方法をまとめたマニュアルを作成。リリースに必要な準備を完了した。</div>
+          </div>
+          <div class="ctx">
+            <div class="box bg"><span class="k"><svg class="ic"><use href="#i-compass"/></svg>背景</span><p>お客様とご家族・車の関係を正しく登録し、現場が同じルールで運用できる状態が必要だった。</p></div>
+            <div class="box val"><span class="k"><svg class="ic"><use href="#i-spark"/></svg>価値</span><p>データを整理しながら、アプリでご家族の車を確認・予約できる機能を現場で安定して運用できる。</p></div>
+          </div>
+          <div class="fwd single">
+            <div class="box next"><span class="k"><svg class="ic"><use href="#i-arrow"/></svg>このあとの予定</span><p>運用開始後の問い合わせや改善点を確認し、必要に応じて内容を見直す。</p></div>
+          </div>
+        </div>
+        <div class="item">
+          <div class="item-head"><h3>各部署への勉強会・機能リリース</h3><span class="badge b-pub">公開済</span></div>
+          <div class="detail-block">
+            <div class="detail-label"><svg class="ic" style="width:13px;height:13px"><use href="#i-pulse"/></svg>今月の動き</div>
+            <div class="detail">各部署向けの勉強会を実施し、機能の目的と使い方を共有。そのうえで家族一覧／ユーザータイプを正式にリリースし、実運用を開始した。</div>
+          </div>
+          <div class="ctx">
+            <div class="box bg"><span class="k"><svg class="ic"><use href="#i-compass"/></svg>背景</span><p>機能を公開するだけでなく、登録ルールを各部署で理解してもらう必要があった。</p></div>
+            <div class="box val"><span class="k"><svg class="ic"><use href="#i-spark"/></svg>価値</span><p>家族と車の関係を正しく管理しながら、お客様がご家族の車をアプリから確認・予約できるようになる。</p></div>
+          </div>
+          <div class="fwd single">
+            <div class="box next"><span class="k"><svg class="ic"><use href="#i-arrow"/></svg>このあとの予定</span><p>運用後に出てくる課題をプロジェクトメンバーと共有し、機能面・運用面の両方から改善する。</p></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+  <section class="project">
+    <div class="pj-lead">
+      <div class="top">
+        <span class="pj-eyebrow"><svg class="ic" style="width:12px;height:12px"><use href="#i-flag"/></svg>PROJECT</span>
+        <span class="pj-title">ZoomPhone連携／対話管理</span>
+      </div>
+      <div class="pj-conclusion">
+        <span class="badge b-prog">進行中</span>
+        <p>画面モックが完成し、「人」に紐づく対話管理を軸にFCSの顧客情報画面の設計まで進展。次はテスト確認からUI調整・運用ルールづくりへ進む段階。</p>
+      </div>
+    </div>
+    <div class="pj-about">
+      <div class="about-row"><span class="about-tag">目的</span><p>コンタクトセンター立ち上げに向けて、電話対応と対話履歴を一元的に扱える基盤を整える。今年中に最低限のUIを形にし、実際に回線を切り替えられる状態まで進める。</p></div>
+      <div class="about-row"><span class="about-tag">現在地</span><p><b>対話管理の画面モックが完成し、FCS側の顧客情報画面の設計にも着手。現在はテスト・調整に向けた段階。</b></p></div>
+      <details class="rm-fold"><summary><svg class="ic chev" style="width:13px;height:13px"><use href="#i-chev"/></svg>今年のロードマップを見る</summary><img class="rm-img" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAaQAAADmCAMAAACtdQHUAAADAFBMVEX/+vTncTggIB3r59768OYcinjIWij///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////9rTyhNAAAMw0lEQVR42u2di3qjOgyExZT3f+bdboOtkWRiSNJt6Oicb5umCcb6rYttELZIfryYVCBIEkESJIkgSQRJkCSCJBEkQZIIkiBJBOlfg/ZdjZrZL4b0UOdvkOyfvLprdk1IZl19TY1Bn3ZgsMZjGMkBi7DJsUFHvz6k3tWgUUsE7kMKx7q9DtT2LPfvPwnyHUiXdXe9Z9sA7i+St7uvB2eV0d0dhLRYZmAvc8pvAinSWkpIfZRbeMWQGKyPSXS0I+oubfvXQRrZC2mVrIFDWmPmX6TEYQpS9ace7LpDvGRuN4xJ1OXgWUpI7VevLnOQPBQrVTtMLErXRqOpN/1rITEmC5AcGoeEP+A+dsfdjSHxCfCv6YQv5e1m3F0KUSkRHECKiVzX54mYxDGS417xdfslkAYj05YhpODuCkjtnZG720kcbOB+l6szmkvBR5Bi3IkxyR2G50inIO0isOiel98CadMnBwj+JH8iT2DCZHZL2205Ok/apRSbvNa68d4gzetDcVba0+y4SlFkys0i3fRqBlL1h9TGMBf9lQustqvGiSWITanTicNgljS0nMsx+n5I/efzlHn1TTHLv3d/0dfs3IxlsbOQ3LJ0c4+tmS2buLMI6Nq3fPru/OxC9DIk25RpTqsh7x6imYJEM92eo7N+Q9pxO51tfcmIOS/ijVKYy0Ayrw5LNmWcpdWfG2dkzn5oKtXfMjIRI91//WeLLX7ubGSJttmSLVe2pJR23dTRu23uZxzNPSGsvOLY3VnI4oMz2zRvbWyYs3ljN9D2CK9qSbdeWhjM1mf9XYdkXWHoWmlLbdAvnLI3w3QDgWfSITZ1e+dNcnNrt3ad+ZJV8Tm4osW8RgpIyxIg1VHbKBz1we6jkvNtzfmSa7PFr0VZupKhnZwz/ytOZlOEKbo7ASkqz196kLK7hSJWzNC6Z/VJg3XTSevll7Ykd8kVBfWFrzAgZ1O4uxSE2JJcitICvT/mEraveoLuLMkZd04ILw4pRiNealt4V2fxyirTqbDHnbZQjWJ+Mf3pJ2RsweZiUh9P5kbbVd2dy7JpSlR9gS8QWeolOCtoLGnt1shGaZHXDxXjqFit4ZG/uyokiSBJBEmQJP8LkkQikUgkEolEIpFIJBLJd4iWYX7+KpCU9PMpLcsq+b9yl5IY/XxKYvQGlARJkCQ/ERL49eevuL3nf4I/2b+C+lCC1DX0KawhFNrCjgbhDvP3n6//EwBQUxgyFqQICV41GVLXK/YYfWK5WUsTB2N739lVO2z8vCAVkAoNwdlFY4avdweQ1tV/IVhXguesDcGEBOmuu7sptfgrbijGMWUzuNtXEIaA84IdXAEJo6EgS/Jez8f4bknu9wwJRKNUuftMgEQjQ5Y0B2ktIX0pEmNGK1mPd5xryCew9gwQ1JwgjRKHPo4LSN7dDSCFb/sXDpLzfdjyCUGat6Q1JQ7s3u67u9UnBT4/KNPxljTI3T0GKabgPuBUkKpsnuNPD0qO4YrBLECQeMUh6nAFJ+YOHAYxqZ5yIeTlZFKBejXHEqQnLwu51G20sLCiWFoAg9banRZYBUkiSIIkESSJIAmSRJAESZAESSJIgiT54ZBE6Q0YidI7MNL9SbqLTKJ6TxKJRCKRSCQSiUQi+Y3y2kUpNXGkCUESJEESJEGSBgVJTQiSIL2ke+BiHeUNg+v8zZgHmuC7SPEYJAxL++BsL+YhcWv+trtndc8pDPVd0EfqbBxpoionch5Sr4Tw9d92Y3YqVvFsSFQHoxVkCHcin+oeKaffZu6rOcDfa3vCkqiaR2piUyAeG2q+LsUNDui++jUVw3gWJCC5GrgBsikQB7vI4wDdT1BxiN6sK2VzbpjvNcFVIh6EdANDN2P3v7uR/Ux3B7KltairBnKyD2iQSgNEMFiRCkI9pwm6lf64Bp2X6wdzPg6+Cy9ydwnSin5jf/Nz6wPdi/UgQKEVzsmfjkmxPBs3saZCHsd74Qwm159oJoxst0+GRO5u7RH34cTBlwCgOkPAkyCRBmMT8NVangGJCoZw+HupJYErbbiSG6sre3fSkophjlCfrUN62N3lJnKhpMO9yOXk0F3OUes5b0lVR+DSzWMnQalXTiDdgH62JRVNrFh9rD8720PM4kLevXIhzBdA8hklaW31pR5PdI8mKyEN8WU/OYc8l4IPmuh14Dj9Ow2pDV9uihzBEyGhmrQ6SKBw+NBkNjlOJN+GI6PwQBNY2SdhfWQyi7VNUPz6BsKU8wUrDsWsNaSUj8/VtXanBVZBEiRBEiRBEiRBEqTfDOnjlVdefqiJI00IkiAJkiAJkjQoSGpCkARJGhQkNSFIgiRI3w5p23b9+qX9Ee4FhofA1/e/XmK6e+2YW7vDg8LGzVMT2P5pp2P03d5H/8a/9/o3dpv4/FhUFHq/d/X0HEtCPO30qure7QxRnCN1r30n/5a086mJ29FcE/OQOnuQxANxz8rREnvRz6upp42nr9MNinJ6gfsNpyyJBhP8OLHMyCnWDa7YfIBkRNMPgTQA0SDZPCTmYWCTRWVJ7fDVSYwsydjjNOWh0hP4DB6E1HB3N+MG2dhbufGBoM4SkjtJ5+4wcHelAQw9KoI/QBjwxYHANoUZS9rMgiwJfAq7kIK1zUJqygpjMDtiZC06S6TW9yBZcDQ+AJ21pBCBYtRxkGrHNmlJfkS7QQZySOYC17Mg5aN3zWxjMkEKlnQvJpFnNo7Z3Xf4w2+mORuTNgrukN7NIg+1Flgn3Z0LAa4/3myNe4LkOx6A1Ad4i7kx+A7dHcekSUhkqGVMygYw4e6ayuFPPmYVFoYCe4spY+Xw5/KcUeJAQ/k4JHQ0lIGBGhpAIjc9A8kCeeTMFRaDyKwlGSeFBGmYo/I37kICJUF+kO4mDrCHEge4mO9OwPsEA0bTHM5MfU8/kkclRwBnWbDhGJ+G5OcqQNZjcRh0Vz4D6fZZipdNb6hRgyYRzW2cggRKjZ1JbyaM8QzDnRwNpZ3J7OZgMczueBo1AYnNtBjddf7WA+OEu3PAQdF7C50YzbZ2Z7laFvohTQiSFlilQUFSE4IkSIIkSIIkDb4XJNrCS4uDE4n+bPcwexCcaGJ/mzKukZzshdv0s7g7sTMjfgakbTMobSfNMBoufxZz9RkWMBusgM0sCzEMM0sLDnsLtvd6QZt+blzj4CB8yJKQNyGcOu+sh98Zg9Ugw5wVDbcrxpbUlvD79oVf0J0f8KMmtrUgv0fxUkuK+5cJSLz04jik8V4FH224CX1fg24fHLQmHreCD3m8vBsSDB5OZS91d5sXQOEvEh3EKIaZMciQwOiLi1I8rmHPQxO8bh+2CPjKmcfCHsKVODge605AQl/ILdaPS1YH3Z3R0eoLx2xn5wIHLAlhs9j7O7gtzhMxqavHbxXwPuDLEgfzlx65K+myGktIE4v8VqYh8RWmE4ximLvLfhB6ZnEr+Jy7cylCu0iGrp2AfVdMouuGRl7vXlDPlpQuZSD7KC9oPB6TcnRiBw3DE9yd2652holzl0dOx6R03UexI15eJjnOPGN2l3QOVAfGgWnTR3La4GGDImHA6amYG2n++gi62vZ1kMzvkGInZz49mcXsTPVQm7wzC+O47jkB8dqHU5bU95PjpYZtX/ZFMUlrNlq7UxOCJEjSoCCpCUESJEESJEESJEESJEESJGlQkNSEIAmSIP0XSK9s/ENNPIfRCxv/UBPPYvSyxj/UxPMY/f3US0RNnGlCIpFIJBKJRCKRSCQSiUQikUgkEolEInlItptOi3dvL2Md9FEx6nRkVy7pzhn4G6r3n3cTC8sP7od+7LbfH8QmP4QhQ+oVnYsCO0bFHvLzdhrRqqqPV3S/Bb983o0vTpX7kZ5/4ocdV55+N0Zc4txihXUqT+PfpG9U5bedreGOLaVb08vn3fhSFigAW6xPMyqr8XbGBXr6wiF3R2VakD5PttVKXOw8iik8YSg+7wbx4UvhKU8OsTdqjIoXvZOzo8fLDN2drxjmB69XvmFQzAtUHKgOWkZGWj3vZlCCJj8xpD/agOtu+Aj5dslC9fifbEmtnh897wTezbDaEA12XIkElgDn592UkMKYSOeSK6Dg7YwpFHqJug3PnynHbHwmkS+0M1sVzfknqjRCz7uhh7ulJ42FYi79BFwxuoT6rbI7hHhfqNy7RVd4zVdtGUJiJRUGFSGVz7tBEXZQ1JDi7J0eLuNC5Fum4H7oVlMXwEplFCm48TMkS4L5yXfueKifdwNYVR8xlXoLiUMsnfiOkEJgAKzWniUXAwQ/RnV9S6fp/jqA1BPO6nk34Sfc4wgpU0l+mYz5GhNciUQikUgkEolEIpFIJBKJRCKRSCQSiUQikUgkEolEIpFIJJ/yB8//p4hqYX/IAAAAAElFTkSuQmCC" alt="今年のロードマップ"></details>
+    </div>
+    <div class="pj-body">
+      <div class="items-head"><svg class="ic"><use href="#i-list"/></svg>開発中・作業中の項目 <span class="cnt">2件</span></div>
+      <div class="items">
+
+
+        <div class="item">
+          <div class="item-head"><h3>対話管理の画面モック完成</h3><span class="badge b-done">完了</span></div>
+          <div class="detail-block">
+            <div class="detail-label"><svg class="ic" style="width:13px;height:13px"><use href="#i-pulse"/></svg>今月の動き</div>
+            <div class="detail">コンタクトセンターで利用する対話管理の画面モックが完成。電話や対話の履歴を「人」に紐づけて管理する考え方を画面に落とし込んだ。</div>
+          </div>
+          <div class="ctx">
+            <div class="box bg"><span class="k"><svg class="ic"><use href="#i-compass"/></svg>背景</span><p>対応履歴を人単位で追えるようにし、担当者が変わってもこれまでのやり取りを把握できる状態が必要だった。</p></div>
+            <div class="box val"><span class="k"><svg class="ic"><use href="#i-spark"/></svg>価値</span><p>過去の対話を踏まえた対応がしやすくなり、コンタクトセンターでの対応品質をそろえやすくなる。</p></div>
+          </div>
+          <div class="fwd single">
+            <div class="box next"><span class="k"><svg class="ic"><use href="#i-arrow"/></svg>このあとの予定</span><p>テストで動作と使い勝手を確認し、プロジェクトメンバーとUIの調整内容を整理する。</p></div>
+          </div>
+        </div>
+        <div class="item">
+          <div class="item-head"><h3>FCSの顧客情報画面の設計</h3><span class="badge b-prog">進行中</span></div>
+          <div class="detail-block">
+            <div class="detail-label"><svg class="ic" style="width:13px;height:13px"><use href="#i-pulse"/></svg>今月の動き</div>
+            <div class="detail">対話履歴を人に紐づけて管理する設計に合わせ、FCS側も顧客を基点に情報を確認できる画面設計へ進んでいる。</div>
+          </div>
+          <div class="ctx">
+            <div class="box bg"><span class="k"><svg class="ic"><use href="#i-compass"/></svg>背景</span><p>対話管理だけを変えても、FCS側の顧客情報の持ち方が合っていなければ一貫した対応につながらない。</p></div>
+            <div class="box val"><span class="k"><svg class="ic"><use href="#i-spark"/></svg>価値</span><p>顧客情報と対話履歴を同じ人を基点に扱えるようになり、コンタクトセンター運用の基盤になる。</p></div>
+          </div>
+          <div class="fwd single">
+            <div class="box next"><span class="k"><svg class="ic"><use href="#i-arrow"/></svg>このあとの予定</span><p>テスト確認後、プロジェクトメンバーと内容を確認し、UI調整と運用ルールを整備するメンバーを選定する。</p></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    DX戦略課 ・ 月次進捗レポート ／ 担当：瑞慶山 優介 ／ 対象期間：2026年8月15日〜9月15日<br>
+    ※ このレポートはDX戦略MTGでの共有用です。部長陣以外への拡散はご遠慮ください。
+  </footer>
+
+</div>
+</body>
+</html>
